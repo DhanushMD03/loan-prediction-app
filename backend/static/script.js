@@ -1,5 +1,6 @@
 async function predict() {
 
+    // Convert years → months
     let years = parseFloat(document.getElementById("term").value) || 30;
     let termInMonths = years * 12;
 
@@ -18,13 +19,17 @@ async function predict() {
     };
 
     try {
-        const response = await fetch("/predict", {
+        const response = await fetch("/predict", {   // ✅ FIXED
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
         });
+
+        if (!response.ok) {
+            throw new Error("Server error");
+        }
 
         const result = await response.json();
 
@@ -37,16 +42,20 @@ async function predict() {
             return;
         }
 
-        resultElement.style.color = result.result === "Approved" ? "green" : "red";
+        // 🎨 Color
+        resultElement.style.color =
+            result.result === "Approved" ? "green" : "red";
 
+        // 📊 Risk
         let risk = "";
         if (result.probability >= 80) risk = "Low Risk";
         else if (result.probability >= 60) risk = "Medium Risk";
         else risk = "High Risk";
 
         resultElement.innerText =
-            result.result + " (" + result.probability + "%) - " + risk;
+            `${result.result} (${result.probability}%) - ${risk}`;
 
+        // 📈 Progress bar
         progressBar.style.width = result.probability + "%";
         progressBar.innerText = result.probability + "%";
 
@@ -57,6 +66,7 @@ async function predict() {
 
     } catch (error) {
         console.error("Error:", error);
-        document.getElementById("result").innerText = "Server connection failed.";
+        document.getElementById("result").innerText =
+            "Server connection failed.";
     }
 }
