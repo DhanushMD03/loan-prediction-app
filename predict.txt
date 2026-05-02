@@ -1,0 +1,22 @@
+@app.route("/predict", methods=["POST"])
+def predict():
+    data = request.json
+
+    df = pd.DataFrame([data])
+    df = pd.get_dummies(df)
+
+    # Add missing columns
+    for col in columns:
+        if col not in df:
+            df[col] = 0
+
+    df = df[columns]
+
+    # Apply scaling
+    df_scaled = scaler.transform(df)
+
+    prediction = model.predict(df_scaled)
+
+    result = "Approved" if prediction[0] == 1 else "Rejected"
+
+    return jsonify({"result": result})
