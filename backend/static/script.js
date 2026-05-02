@@ -1,72 +1,75 @@
 async function predict() {
+    const resultElement = document.getElementById("result");
+    const progressBar = document.getElementById("progressBar");
+    const submitBtn = document.getElementById("predictBtn");
 
-    // Convert years → months
-    let years = parseFloat(document.getElementById("term").value) || 30;
-    let termInMonths = years * 12;
+    if (resultElement) {
+        resultElement.innerText = "Processing...";
+        resultElement.style.color = "blue";
+    }
 
-    const data = {
-        Gender: document.getElementById("gender").value,
-        Married: document.getElementById("married").value,
-        Dependents: document.getElementById("dependents").value,
-        Education: document.getElementById("education").value,
-        Self_Employed: document.getElementById("self_employed").value,
-        ApplicantIncome: parseFloat(document.getElementById("income").value) || 0,
-        CoapplicantIncome: parseFloat(document.getElementById("co_income").value) || 0,
-        LoanAmount: parseFloat(document.getElementById("loan").value) || 0,
-        Loan_Amount_Term: termInMonths,
-        Credit_History: parseInt(document.getElementById("credit").value),
-        Property_Area: document.getElementById("property").value
-    };
+    if (submitBtn) submitBtn.disabled = true;
 
     try {
-        const response = await fetch("/predict", {   // ✅ FIXED
+        const years = parseFloat(document.getElementById("term")?.value) || 30;
+
+        const data = {
+            Gender: document.getElementById("gender")?.value || "",
+            Married: document.getElementById("married")?.value || "",
+            Dependents: document.getElementById("dependents")?.value || "0",
+            Education: document.getElementById("education")?.value || "",
+            Self_Employed: document.getElementById("self_employed")?.value || "No",
+            ApplicantIncome: parseFloat(document.getElementById("income")?.value) || 0,
+            CoapplicantIncome: parseFloat(document.getElementById("co_income")?.value) || 0,
+            LoanAmount: parseFloat(document.getElementById("loan")?.value) || 0,
+            Loan_Amount_Term: years * 12,
+            Credit_History: parseInt(document.getElementById("credit")?.value) ?? 1,
+            Property_Area: document.getElementById("property")?.value || ""
+        };
+
+        const response = await fetch("/predict", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
 
-        if (!response.ok) {
-            throw new Error("Server error");
-        }
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
         const result = await response.json();
+        if (result.error) throw new Error(result.error);
 
-        const resultElement = document.getElementById("result");
-        const progressBar = document.getElementById("progressBar");
+        const isApproved = result.result === "Approved";
+        const prob = Number(result.probability ?? 0);
 
-        if (result.error) {
-            resultElement.innerText = "Error: " + result.error;
-            resultElement.style.color = "red";
-            return;
-        }
+        let risk = "High Risk";
+        if (prob >= 80) risk = "Low Risk";
+        else if (prob >= 60) risk = "Medium Risk";
 
-        // 🎨 Color
-        resultElement.style.color =
-            result.result === "Approved" ? "green" : "red";
+        resultElement.innerText = `${result.result} (${prob}%) - ${risk}`;
+        resultElement.style.color = isApproved ? "#28a745" : "#dc3545";
 
-        // 📊 Risk
-        let risk = "";
-        if (result.probability >= 80) risk = "Low Risk";
-        else if (result.probability >= 60) risk = "Medium Risk";
-        else risk = "High Risk";
-
-        resultElement.innerText =
-            `${result.result} (${result.probability}%) - ${risk}`;
-
-        // 📈 Progress bar
-        progressBar.style.width = result.probability + "%";
-        progressBar.innerText = result.probability + "%";
-
-        progressBar.className =
-            result.result === "Approved"
+        if (progressBar) {
+            progressBar.style.width = `${prob}%`;
+            progressBar.innerText = `${prob}%`;
+            progressBar.className = isApproved
                 ? "progress-bar bg-success"
                 : "progress-bar bg-danger";
+        }
 
     } catch (error) {
-        console.error("Error:", error);
-        document.getElementById("result").innerText =
-            "Server connection failed.";
+        console.error("Prediction Error:", error);
+
+        if (resultElement) {
+            resultElement.innerText = "Something went wrong. Please try again.";
+            resultElement.style.color = "red";
+        }
+
+        if (progressBar) {
+            progressBar.style.width = "0%";
+            progressBar.innerText = "0%";
+        }
+
+    } finally {
+        if (submitBtn) submitBtn.disabled = false;
     }
 }
