@@ -69,6 +69,7 @@ async function predict() {
             progressBar.innerText = "0%";
         }
     } finally {
+        // Always re-enable the button
         if (submitBtn) submitBtn.disabled = false;
     }
 }
