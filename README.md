@@ -65,58 +65,95 @@ loan-prediction-app/
 └── .gitignore
 ```
 
-⚙️ Installation & Setup
-1️⃣ Clone Repository
+# ⚙️ Installation & Setup
+
+## 1️⃣ Clone Repository
+
+```bash
 git clone https://github.com/DhanushMD03/loan-prediction-app.git
-2️⃣ Open Project Folder
+```
+
+## 2️⃣ Open Project Folder
+
+```bash
 cd loan-prediction-app
-3️⃣ Create Virtual Environment
+```
+
+## 3️⃣ Create Virtual Environment
+
+```bash
 python -m venv venv
-4️⃣ Activate Virtual Environment
-Windows
+```
+
+## 4️⃣ Activate Virtual Environment
+
+### Windows
+
+```bash
 venv\Scripts\activate
-Linux / Mac
+```
+
+### Linux / Mac
+
+```bash
 source venv/bin/activate
-5️⃣ Install Dependencies
+```
+
+## 5️⃣ Install Dependencies
+
+```bash
 pip install -r backend/requirements.txt
-6️⃣ Run Flask App
+```
+
+## 6️⃣ Run Flask App
+
+```bash
 cd backend
 python app.py
-🌐 Open in Browser
+```
+
+# 🌐 Open in Browser
+
+```bash
 http://127.0.0.1:5000
-📊 Machine Learning Model
+```
+
+# 📊 Machine Learning Model
 
 The model was trained using Scikit-learn for loan approval prediction based on:
 
-Applicant Income
-Coapplicant Income
-Loan Amount
-Credit History
-Property Area
-Employment Status
-Education
-Dependents
-Marital Status
+- Applicant Income
+- Coapplicant Income
+- Loan Amount
+- Credit History
+- Property Area
+- Employment Status
+- Education
+- Dependents
+- Marital Status
 
-📷 Application Preview
-Home Page
-User enters loan details
-Clicks Predict button
-Receives approval prediction with risk score.
+# 📷 Application Preview
 
-🔥 Future Improvements
-User Authentication
-Loan EMI Calculator
-Data Visualization Dashboard
-Database Integration
-Model Accuracy Improvements
-Mobile App Version
+- User enters loan details
+- Clicks Predict button
+- Receives approval prediction with risk score
 
-👨‍💻 Author
+# 🔥 Future Improvements
+
+- User Authentication
+- Loan EMI Calculator
+- Data Visualization Dashboard
+- Database Integration
+- Model Accuracy Improvements
+- Mobile App Version
+
+# 👨‍💻 Author
+
 Dhanush MD
-GitHub:
+
+GitHub:  
 https://github.com/DhanushMD03
 
-📄 License
+# 📄 License
 
 This project is licensed under the MIT License.
