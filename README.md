@@ -63,6 +63,7 @@ loan-prediction-app/
 ├── README.md
 ├── LICENSE
 └── .gitignore
+```
 
 ⚙️ Installation & Setup
 1️⃣ Clone Repository
