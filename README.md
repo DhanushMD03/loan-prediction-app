@@ -44,25 +44,50 @@ https://loan-prediction-app-nv6q.onrender.com
 # 📂 Project Structure
 
 ```text
-loan-prediction-app/
+loan_prediction/
 │
 ├── backend/
-│   ├── app.py
-│   ├── requirements.txt
+│   │
 │   ├── model/
+│   │   ├── columns.pkl
+│   │   ├── generate_data.py
+│   │   ├── generated_data.csv
+│   │   ├── loan_data_real.csv
 │   │   ├── loan_model.pkl
 │   │   ├── scaler.pkl
-│   │   └── columns.pkl
+│   │   └── train_model.py
+│   │
+│   ├── static/
+│   │   └── script.js
 │   │
 │   ├── templates/
 │   │   └── index.html
 │   │
-│   └── static/
-│       └── script.js
+│   ├── app.py
+│   └── requirements.txt
 │
-├── README.md
+├── frontend/
+│   └── style.css
+│
+├── model/
+│   ├── columns.pkl
+│   ├── generate_data.py
+│   ├── generated_data.csv
+│   ├── loan_data_real.csv
+│   ├── loan_model.pkl
+│   ├── scaler.pkl
+│   └── train_model.py
+│
+├── venv/
+│   ├── Include/
+│   ├── Lib/
+│   ├── Scripts/
+│   └── pyvenv.cfg
+│
 ├── LICENSE
-└── .gitignore
+├── predict.txt
+├── README.md
+└── requirements.txt
 ```
 
 # ⚙️ Installation & Setup
